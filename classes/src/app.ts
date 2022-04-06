@@ -4,7 +4,7 @@ class Department {
   //we can add private keyword
   //it will make sure this var is not accessible from outside diretyl
   //it is called modifier
-  //private && public(default)
+  //private && public(default) && readonly
   private employees: string[] = [];
 
   //   constructor(n: string) {
@@ -13,7 +13,7 @@ class Department {
 
   //shorthand to init var
   //in this method we do not have to double initialize the var
-  constructor(private id: string, public name: string) {}
+  constructor(private readonly id: string, public name: string) {}
 
   //if we dont use this keyword it will not access name var inside class but something define globally so we have to use this keyword
   describe(this: Department) {
@@ -30,14 +30,22 @@ class Department {
   }
 }
 
-const accounting = new Department("d1", "Accounting");
+// Inheritence
+class ITDepartment extends Department {
+  constructor(id: string, public admins: string[]) {
+    super(id, "IT");
+  }
+}
 
-accounting.describe();
-accounting.addEmployees("Max");
-accounting.addEmployees("Manu");
+const IT = new ITDepartment("IT1", ["Max", "Younus"]);
 
-accounting.printEmployeeInformation();
+IT.describe();
+IT.addEmployees("Max");
+IT.addEmployees("Manu");
 
+IT.printEmployeeInformation();
+
+console.log("IT", IT);
 // *********************
 //tricky part for this in order to safe this we add a type on method
 // const accountingCopy = {  describe: accounting.describe };
