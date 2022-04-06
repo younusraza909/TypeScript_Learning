@@ -5,7 +5,12 @@ class Department {
   //it will make sure this var is not accessible from outside diretyl
   //it is called modifier
   //private && public(default) && readonly
-  private employees: string[] = [];
+  protected employees: string[] = [];
+
+  // public :accessible from anywhere
+  //private:accessible from class where it is init
+  //readonly:cant change once init
+  //protected:accessible from class where init and extended class
 
   //   constructor(n: string) {
   //     this.name = n;
@@ -35,6 +40,13 @@ class ITDepartment extends Department {
   constructor(id: string, public admins: string[]) {
     super(id, "IT");
   }
+
+  addEmployees(employee: string) {
+    if (employee === "Max") {
+      return;
+    }
+    this.employees.push(employee);
+  }
 }
 
 const IT = new ITDepartment("IT1", ["Max", "Younus"]);
@@ -45,7 +57,6 @@ IT.addEmployees("Manu");
 
 IT.printEmployeeInformation();
 
-console.log("IT", IT);
 // *********************
 //tricky part for this in order to safe this we add a type on method
 // const accountingCopy = {  describe: accounting.describe };
