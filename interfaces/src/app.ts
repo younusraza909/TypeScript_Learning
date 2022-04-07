@@ -20,6 +20,8 @@ add = (n1: number, b1: number) => {
 
 interface Named {
   readonly name: string;
+  outputName?: string; //option property
+  myMethod?(a: number, b: number): number; //option method
 }
 
 //in interface and custom type we can use only readonly modifier
