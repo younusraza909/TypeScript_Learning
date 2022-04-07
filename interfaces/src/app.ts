@@ -1,16 +1,31 @@
 //specific for typescript
-interface Person {
+// custom type
+// type Person = {
+//   name: string;
+//   age: number;
+//   greet(phrase: string): void;
+// };
+
+interface Greetable {
   name: string;
-  age: number;
   greet(phrase: string): void;
 }
 
-let user1: Person;
+//interface can e use with class || type cannot
+//we can add more than that in class but minimum should satify interfase
+class Person implements Greetable {
+  name: string;
+  age = 30;
+  constructor(n: string) {
+    this.name = n;
+  }
 
-user1 = {
-  name: "Max",
-  age: 20,
-  greet(phrase: string) {
+  greet(phrase: string): void {
     console.log(phrase + " " + this.name);
-  },
-};
+  }
+}
+
+let user1: Greetable;
+
+user1 = new Person("Max");
+user1.greet("Hi-There");
