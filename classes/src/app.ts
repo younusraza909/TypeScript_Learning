@@ -1,11 +1,15 @@
 // Code goes here!
-class Department {
+abstract class Department {
   //   private name: string;
   //we can add private keyword
   //it will make sure this var is not accessible from outside diretyl
   //it is called modifier
   //private && public(default) && readonly
   protected employees: string[] = [];
+
+  // abstract
+  //its a method or prop which is define in base classs and child class which extends it have to give its implemetation (necessarily)
+  abstract abstractedClass(): void;
 
   // public :accessible from anywhere
   //private:accessible from class where it is init
@@ -56,6 +60,11 @@ class ITDepartment extends Department {
     throw new Error("No report found");
   }
 
+  //we have to add this method because it is abstracted
+  abstractedClass() {
+    console.log("Hello i am abstracted class");
+  }
+
   // setter
   set mostRecentReport(value: string) {
     this.addReports(value);
@@ -83,6 +92,8 @@ const emp1 = Department.createEmployee("MAX");
 console.log(emp1);
 
 const IT = new ITDepartment("IT1", ["Max", "Younus"], ["report 1", "report 2"]);
+console.log(IT.abstractedClass());
+
 //
 //we dont use getter as function but as property
 console.log(IT.mostRecentReport);
