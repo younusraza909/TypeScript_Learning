@@ -9,6 +9,7 @@ abstract class Department {
 
   // abstract
   //its a method or prop which is define in base classs and child class which extends it have to give its implemetation (necessarily)
+  //typescript specfic
   abstract abstractedClass(): void;
 
   // public :accessible from anywhere
@@ -87,6 +88,39 @@ class ITDepartment extends Department {
     this.lastReport = text;
   }
 }
+
+// Singleton Instance Pattern || private constructor
+//if in any case we want to restict user to only make one instance of a class we can make constructor of that class private
+//by doing this we can not call new on that class from outside but we will do a little workk around
+
+class AccountingDepartment {
+  static instance: AccountingDepartment;
+  private constructor(public head: string, public staff: string[]) {}
+
+  getDepartmentDetails() {
+    console.log(
+      "Head name" + " " + this.head + " " + "staff name " + " " + this.staff
+    );
+  }
+
+  static getInstance() {
+    if (AccountingDepartment.instance) {
+      return AccountingDepartment.instance;
+    } else {
+      AccountingDepartment.instance = new AccountingDepartment("Raza", [
+        "Farhan",
+        "Aliyaan",
+      ]);
+      return AccountingDepartment.instance;
+    }
+  }
+}
+
+const account = AccountingDepartment.getInstance();
+console.log("Account", account);
+account.getDepartmentDetails();
+
+// **********************************************************************//
 
 const emp1 = Department.createEmployee("MAX");
 console.log(emp1);
