@@ -1,4 +1,5 @@
 //specific for typescript
+//use to define structure for function and object
 // custom type
 // type Person = {
 //   name: string;
@@ -6,8 +7,25 @@
 //   greet(phrase: string): void;
 // };
 
-interface Greetable {
-  name: string;
+//Fucntion Structure
+// type AddFn=(a:number,b:number)=>number
+interface AddFn {
+  (a: number, b: number): number;
+}
+
+let add: AddFn;
+add = (n1: number, b1: number) => {
+  return n1 + b1;
+};
+
+interface Named {
+  readonly name: string;
+}
+
+//in interface and custom type we can use only readonly modifier
+//interfaces can be extend
+//for interfaces we can extend multiple interfaces unlike class
+interface Greetable extends Named {
   greet(phrase: string): void;
 }
 
