@@ -1,93 +1,41 @@
-// INTERSECTION TYPES
-//it actually very close to interface extend
-type Admin = {
-  name: string;
-  privileges: string[];
-};
+//  DESCRIMINATED UNIONS
+//it similar to type guard but a different approach
+//it uses in object
 
-type Employee = {
-  name: string;
-  startDate: Date;
-};
-
-type ElevatedEmployee = Admin & Employee;
-
-const e1: ElevatedEmployee = {
-  name: "younus",
-  privileges: ["create-server"],
-  startDate: new Date(),
-};
-
-// Example other
-//in case of union it will give its intersection
-type Combinable = string | number;
-type Numeric = number | boolean;
-
-type Universal = Combinable & Numeric;
-
-// *************************************************************//
-
-//TYPE GUARDS
-function add(a: Combinable, b: Combinable) {
-  //technically this if statement is a type guard
-  if (
-    typeof a === "string" ||
-    typeof b === "string"
-  ) {
-    return a.toString() + b.toString();
-  }
-  return a + b;
+interface Bird {
+  type: "bird";
+  flyingSpeed: number;
 }
 
-// Another Example
-type UnknownEmployee = Employee | Admin;
-
-function printEmployeeInformation(
-  emp: UnknownEmployee
-) {
-  //these if are type guard
-  console.log("Name: " + emp.name);
-  if ("privileges" in emp) {
-    console.log("Privileges: " + emp.privileges);
-  }
-  if ("startDate" in emp) {
-    console.log("StartDate: " + emp.startDate);
-  }
+interface Horse {
+  type: "horse";
+  runningSpeed: number;
 }
 
-printEmployeeInformation(e1);
+type Animal = Bird | Horse;
 
-// Another Example
-class Car {
-  drive() {
-    console.log("Driving....");
+function moveAnimal(animal: Animal) {
+  let speed;
+  switch (animal.type) {
+    case "bird":
+      speed = animal.flyingSpeed;
+      break;
+    case "horse":
+      speed = animal.runningSpeed;
+      break;
   }
+  console.log("Moving at a speed of " + speed);
 }
 
-class Truck {
-  drive() {
-    console.log("Driving a Truck....");
-  }
+// *************************************************//
 
-  loadCargo(amount: number) {
-    console.log("Loading cargo ...." + amount);
-  }
-}
+// TYPE CASTING
+// const input = <HTMLInputElement>(
+//   document.getElementById("message-id")!
+// );
 
-type Vehicle = Car | Truck;
+const input = document.getElementById(
+  "message-id"
+)! as HTMLInputElement;
 
-const v1 = new Car();
-const v2 = new Truck();
-
-function useVehicle(vehicle: Vehicle) {
-  vehicle.drive();
-  //   if ("loadCargo" in vehicle) {
-  //     vehicle.loadCargo(1000);
-  //   }
-  if (vehicle instanceof Truck) {
-    vehicle.loadCargo(1000);
-  }
-}
-
-useVehicle(v1);
-useVehicle(v2);
+input.value = "Hi there";
