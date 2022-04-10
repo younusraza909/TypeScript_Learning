@@ -50,3 +50,36 @@ const merged2 = mergeAgain(
   { name: "Younus" },
   { age: 20 }
 );
+
+// Another generics fucntion example
+
+interface Lengthy {
+  length: number;
+}
+
+function countAndDescribe<T extends Lengthy>(
+  element: T
+): [T, string] {
+  let description = "Got not value.";
+  if (element.length === 1) {
+    description = "Got 1 element.";
+  } else if (element.length > 1) {
+    description =
+      "Got " + element.length + " elements.";
+  }
+
+  return [element, description];
+}
+
+console.log(countAndDescribe("Hi there!"));
+
+function extractAndConvert<
+  T extends object,
+  U extends keyof T
+>(obj: T, key: U) {
+  return obj[key];
+}
+
+console.log(
+  extractAndConvert({ name: "Hello" }, "name")
+);
