@@ -51,3 +51,86 @@ class Person {
 
 const pers = new Person();
 console.log(pers);
+
+//---Other usecases of decorator
+
+//in case if we add decorator to property so target will be prototype that will be created by class
+//if we add decorator to static property target will be constructor
+function Log(
+  target: any,
+  propertName: string | Symbol
+) {
+  console.log("Property Decorator 1");
+  console.log(target, propertName);
+}
+
+//using decorator on accessor
+//in this case getting 3 arguments
+function Log2(
+  target: any,
+  name: string,
+  descriptor: PropertyDescriptor
+) {
+  console.log("Accessor Decorator Called 2");
+  console.log(target);
+  console.log(name, descriptor);
+}
+
+//using decorator on method
+//in this case getting 3 arguments
+function Log3(
+  target: any,
+  name: string,
+  descriptor: PropertyDescriptor
+) {
+  console.log("Method Decorator Called 3");
+  console.log(target);
+  console.log(name, descriptor);
+}
+
+//using decorator on parameters
+//in this case getting 3 arguments
+//in this case name is not of parameter but of method in which it is used
+
+function Log4(
+  target: any,
+  name: string,
+  position: number
+) {
+  console.log("parameter Decorator  4");
+  console.log(target);
+  console.log(name, position);
+}
+
+// Order
+//1 Property @
+//2 Accessor @
+//3 Parameter @
+//4 Method @
+
+class Product {
+  @Log
+  title: string;
+  private _price: number;
+
+  @Log2
+  set price(val: number) {
+    if (val > 0) {
+      this._price = val;
+    } else {
+      throw new Error(
+        "Invalid price-should be positive"
+      );
+    }
+  }
+
+  constructor(t: string, p: number) {
+    this.title = t;
+    this._price = p;
+  }
+
+  @Log3
+  getPriceWithTax(@Log4 tax: number) {
+    return this._price * (1 + tax);
+  }
+}
