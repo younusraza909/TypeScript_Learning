@@ -123,10 +123,13 @@ function Log4(
 
 class Product {
   @Log
+  //we can return value from this decorator but it will be ignored
   title: string;
   private _price: number;
 
   @Log2
+  //can return value
+  //can return new descriptor fucntion
   set price(val: number) {
     if (val > 0) {
       this._price = val;
@@ -143,7 +146,51 @@ class Product {
   }
 
   @Log3
+  //can return value
+  //can return new descriptor fucntion
+  //we can return value from @LOG4  decorator but it will be ignored
   getPriceWithTax(@Log4 tax: number) {
     return this._price * (1 + tax);
   }
 }
+
+function autoBind(
+  _: any,
+  _2: string | Symbol,
+  descriptor: PropertyDescriptor
+) {
+  const originalMethod = descriptor.value;
+  const adjDescriptor: PropertyDescriptor = {
+    configurable: true,
+    enumerable: false,
+    get() {
+      // here this will reperesent the responsible object to tigger this method
+      const boundFn = originalMethod.bind(this);
+      return boundFn;
+    },
+  };
+  return adjDescriptor;
+}
+
+class Printer {
+  message = "This Work";
+
+  @autoBind
+  showMessage() {
+    console.log(this.message);
+  }
+}
+const p = new Printer();
+
+const button = document.querySelector("button")!;
+//on event listner this keyword inside fucntion changes it context thus giving us undefined
+// button.addEventListener("click", p.showMessage);
+
+//this will work
+// button.addEventListener(
+//   "click",
+//   p.showMessage.bind(p)
+// );
+
+//we can make a decorator so we can auto bind ir
+button.addEventListener("click", p.showMessage);
