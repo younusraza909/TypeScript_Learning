@@ -22,15 +22,28 @@ function WithTemplate(
   hookId: string
 ) {
   //undescore gives typescript hint that we are getting something but we are not interested in it
-  return function (constructor: any) {
-    const hookEl =
-      document.getElementById(hookId);
-    const p = new constructor();
-    if (hookEl) {
-      hookEl.innerHTML = template;
-      hookEl.querySelector("h1")!.textContent =
-        p.name;
+  return function <
+    T extends {
+      //it is telling that it will be a constructor function
+      new (...args: any[]): { name: string };
     }
+  >(originalConstructor: T) {
+    //decorator when attatched to class can return a constructor function which will extend from base function
+    //now this deccorator will not call when class is define but will be called when instance is called
+    return class extends originalConstructor {
+      constructor(..._: any[]) {
+        super();
+        const hookEl =
+          document.getElementById(hookId);
+
+        if (hookEl) {
+          hookEl.innerHTML = template;
+          hookEl.querySelector(
+            "h1"
+          )!.textContent = this.name;
+        }
+      }
+    };
   };
 }
 
