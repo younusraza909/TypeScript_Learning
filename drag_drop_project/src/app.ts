@@ -1,5 +1,21 @@
 // Code goes here!
 
+//to auto bind this keyword
+//Decorator
+function autoBind(_: any, _2: string | Symbol, descriptor: PropertyDescriptor) {
+  let originalMethod = descriptor.value;
+  let adjDescriptor: PropertyDescriptor = {
+    configurable: true,
+    enumerable: false,
+    get() {
+      let bindFn = originalMethod.bind(this);
+      return bindFn;
+    },
+  };
+  return adjDescriptor;
+}
+
+//Project Input Class
 class ProjectInput {
   templateElement: HTMLTemplateElement;
   hostElement: HTMLDivElement;
@@ -40,7 +56,7 @@ class ProjectInput {
     this.configure();
     this.attatch();
   }
-
+  @autoBind
   private submitHandler(event: Event) {
     event.preventDefault();
 
@@ -48,7 +64,7 @@ class ProjectInput {
   }
 
   private configure() {
-    this.element.addEventListener("submit", this.submitHandler.bind(this));
+    this.element.addEventListener("submit", this.submitHandler);
   }
 
   private attatch() {
